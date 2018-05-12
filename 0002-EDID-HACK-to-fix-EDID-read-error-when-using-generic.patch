@@ -1,0 +1,34 @@
+From 49dc99fa694da2eaa756173ab859b402602fb9cf Mon Sep 17 00:00:00 2001
+From: Shaun2029 <shauns2029@gmail.com>
+Date: Sat, 12 May 2018 00:37:52 +0100
+Subject: [PATCH] EDID: HACK to fix EDID read error when using generic
+ hardcoded EDID.
+
+---
+ drivers/gpu/drm/drm_edid.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+index 39f1db4acda4..74d4cce278e7 100644
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -1691,13 +1691,14 @@ struct edid *drm_get_edid(struct drm_connector *connector,
+ 			  struct i2c_adapter *adapter)
+ {
+ 	struct edid *edid;
+-
++/* HACK: The code below causes the generic EDID load to fail! */
++/*
+ 	if (connector->force == DRM_FORCE_OFF)
+ 		return NULL;
+ 
+ 	if (connector->force == DRM_FORCE_UNSPECIFIED && !drm_probe_ddc(adapter))
+ 		return NULL;
+-
++*/
+ 	edid = drm_do_get_edid(connector, drm_do_probe_ddc_edid, adapter);
+ 	if (edid)
+ 		drm_get_displayid(connector, edid);
+-- 
+2.17.0
+
